@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	outputResp = flag.Bool("print", false, "Output page response")
+	printResp = flag.Bool("print", false, "Output page response")
 )
 
 func main() {
@@ -40,13 +40,14 @@ func main() {
 	t1 := time.Now()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error pinging %v: %v\n", url, err)
+		// TODO are there cases where we should not be exiting with 1? 
 		os.Exit(1)
 	}
 
 	defer resp.Body.Close()
 
 	fmt.Fprintf(os.Stdout, "Got response from %v in %v.\n", url, t1.Sub(t0))
-	if *outputResp {
+	if *printResp {
 		if body, err := ioutil.ReadAll(resp.Body); err == nil {
 			fmt.Fprintf(os.Stdout, "%s", body)
 		}
